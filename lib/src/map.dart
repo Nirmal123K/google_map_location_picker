@@ -272,17 +272,27 @@ class MapPickerState extends State<MapPicker> {
 
   Future<Map<String, String>> getAddress(LatLng location) async {
     try {
-      final endpoint =
-          'https://maps.googleapis.com/maps/api/geocode/json?latlng=${location?.latitude},${location?.longitude}'
-          '&key=${widget.apiKey}&language=${widget.language}';
+      // final endpoint =
+      //     'https://maps.googleapis.com/maps/api/geocode/json?latlng=${location?.latitude},${location?.longitude}'
+      //     '&key=${widget.apiKey}&language=${widget.language}';
 
-      final response = jsonDecode((await http.get(Uri.parse(endpoint),
-              headers: await LocationUtils.getAppHeaders()))
-          .body);
+      // final response = jsonDecode((await http.get(Uri.parse(endpoint),
+      //         headers: await LocationUtils.getAppHeaders()))
+      //     .body);
 
+      // return {
+      //   "placeId": response['results'][0]['place_id'],
+      //   "address": response['results'][0]['formatted_address']
+      // };
+       final coordinates = new Coordinates(double.parse("${location?.latitude}"),
+          double.parse("${location?.longitude}"));
+      var addresses =
+          await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      var address = addresses.first;
+      // return address.locality ?? address.subAdminArea;
       return {
-        "placeId": response['results'][0]['place_id'],
-        "address": response['results'][0]['formatted_address']
+        "placeId": address.postalCode,
+        "address": address.locality ?? address.subAdminArea,
       };
     } catch (e) {
       print(e);
