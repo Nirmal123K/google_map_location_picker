@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_map_location_picker/generated/l10n.dart';
+import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_map_location_picker/src/providers/location_provider.dart';
 import 'package:google_map_location_picker/src/utils/loading_builder.dart';
 import 'package:google_map_location_picker/src/utils/log.dart';
@@ -39,9 +40,12 @@ class MapPicker extends StatefulWidget {
     this.resultCardPadding,
     this.language,
     this.desiredAccuracy,
+    this.showLocation = ShowLocation.address,
   }) : super(key: key);
 
   final String apiKey;
+
+  final ShowLocation showLocation;
 
   final LatLng initialCenter;
   final double initialZoom;
@@ -227,7 +231,7 @@ class MapPickerState extends State<MapPicker> {
                 children: <Widget>[
                   Flexible(
                     flex: 20,
-                    child: FutureLoadingBuilder<Map<String, String>>(
+                    child: FutureLoadingBuilder<Address>(
                       future: getAddress(locationProvider.lastIdleLocation),
                       mutable: true,
                       loadingIndicator: Row(
@@ -237,8 +241,29 @@ class MapPickerState extends State<MapPicker> {
                         ],
                       ),
                       builder: (context, data) {
-                        _address = data["address"];
-                        _placeId = data["placeId"];
+                        switch (widget.showLocation) {
+                          case ShowLocation.address:
+                            _address = data.addressLine;
+                            break;
+                          case ShowLocation.country:
+                            _address = data.countryName;
+                            break;
+                          case ShowLocation.state:
+                            _address = data.adminArea;
+                            break;
+                          case ShowLocation.district:
+                            _address = data.subAdminArea;
+                            break;
+                          case ShowLocation.city:
+                            _address = data.locality;
+                            break;
+                          case ShowLocation.pincode:
+                            _address = data.postalCode;
+                            break;
+                          default:
+                            _address = data.addressLine;
+                        }
+                        _placeId = data.postalCode;
                         return Text(
                           _address ??
                               S.of(context)?.unnamedPlace ??
@@ -271,7 +296,7 @@ class MapPickerState extends State<MapPicker> {
     );
   }
 
-  Future<Map<String, String>> getAddress(LatLng location) async {
+  Future<Address> getAddress(LatLng location) async {
     try {
       // final endpoint =
       //     'https://maps.googleapis.com/maps/api/geocode/json?latlng=${location?.latitude},${location?.longitude}'
@@ -292,15 +317,12 @@ class MapPickerState extends State<MapPicker> {
           await Geocoder.local.findAddressesFromCoordinates(coordinates);
       var address = addresses.first;
       // return address.locality ?? address.subAdminArea;
-      return {
-        "placeId": address.postalCode,
-        "address": address.locality ?? address.subAdminArea,
-      };
+      return address;
     } catch (e) {
       print(e);
     }
 
-    return {"placeId": null, "address": null};
+    return Address();
   }
 
   Widget pin() {

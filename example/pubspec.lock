@@ -14,7 +14,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.0"
+    version: "2.6.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -91,34 +91,55 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  geocoder:
+    dependency: transitive
+    description:
+      name: geocoder
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1"
   geolocator:
     dependency: transitive
     description:
       name: geolocator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.2.1"
+    version: "7.6.0"
+  geolocator_android:
+    dependency: transitive
+    description:
+      name: geolocator_android
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
+  geolocator_apple:
+    dependency: transitive
+    description:
+      name: geolocator_apple
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   geolocator_platform_interface:
     dependency: transitive
     description:
       name: geolocator_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.9"
+    version: "2.3.4"
   geolocator_web:
     dependency: transitive
     description:
       name: geolocator_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "2.0.6"
   google_map_location_picker:
     dependency: "direct dev"
     description:
       path: ".."
       relative: true
     source: path
-    version: "4.1.6"
+    version: "4.1.7"
   google_maps_flutter:
     dependency: transitive
     description:
@@ -216,7 +237,7 @@ packages:
       name: plugin_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "2.0.1"
   provider:
     dependency: transitive
     description:
@@ -235,7 +256,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0"
+    version: "1.8.1"
   stack_trace:
     dependency: transitive
     description:
@@ -277,7 +298,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.19"
+    version: "0.3.0"
   typed_data:
     dependency: transitive
     description:
@@ -293,5 +314,5 @@ packages:
     source: hosted
     version: "2.1.0"
 sdks:
-  dart: ">=2.12.0-259.9.beta <3.0.0"
+  dart: ">=2.12.0 <3.0.0"
   flutter: ">=2.0.0"
