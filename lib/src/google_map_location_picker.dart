@@ -40,9 +40,12 @@ class LocationPicker extends StatefulWidget {
     this.countries,
     this.language,
     this.desiredAccuracy,
+    this.showLocation = ShowLocation.address,
   });
 
   final String apiKey;
+
+  final ShowLocation showLocation;
 
   final LatLng initialCenter;
   final double initialZoom;
@@ -73,7 +76,7 @@ class LocationPicker extends StatefulWidget {
 
 class LocationPickerState extends State<LocationPicker> {
   /// Result returned after user completes selection
-  LocationResult locationResult;
+  NewLocationResult locationResult;
 
   /// Overlay to display autocomplete suggestions
   OverlayEntry overlayEntry;
@@ -343,18 +346,34 @@ class LocationPickerState extends State<LocationPicker> {
         road = 'REQUEST DENIED = please see log for more details';
         print(responseJson['error_message']);
       } else {
-        road =
-            responseJson['results'][0]['address_components'][0]['short_name'];
+        // road =
+        //     responseJson['results'][0]['address_components'][0]['short_name'];
+        road = responseJson['results'][0]['address_components']
+            ['formatted_address'];
       }
 
 //      String locality =
 //          responseJson['results'][0]['address_components'][1]['short_name'];
 
       setState(() {
-        locationResult = LocationResult();
-        locationResult.address = road;
-        locationResult.latLng = latLng;
-        locationResult.placeId = placeId;
+        locationResult = NewLocationResult(
+          formatedAddress: road,
+          latLng: latLng,
+          placeId: placeId,
+          addressComponents: List<AddressComponent>.generate(
+            responseJson['results'][0]['address_components'],
+            (index) {
+              return AddressComponent(
+                longName: responseJson['results'][0]['address_components']
+                    [index]['long_name'],
+                shortName: responseJson['results'][0]['address_components']
+                    [index]['short_name'],
+                types: responseJson['results'][0]['address_components'][index]
+                    ['types'],
+              );
+            },
+          ),
+        );
       });
     }
   }
@@ -407,6 +426,7 @@ class LocationPickerState extends State<LocationPicker> {
           ),
           body: MapPicker(
             widget.apiKey,
+            showLocation: widget.showLocation,
             initialCenter: widget.initialCenter,
             initialZoom: widget.initialZoom,
             requiredGPS: widget.requiredGPS,
@@ -430,6 +450,15 @@ class LocationPickerState extends State<LocationPicker> {
       }),
     );
   }
+}
+
+enum ShowLocation {
+  country,
+  state,
+  district,
+  city,
+  pincode,
+  address,
 }
 
 /// Returns a [LatLng] object of the location that was picked.
@@ -462,6 +491,7 @@ Future<LocationResult> showLocationPicker(
   Decoration resultCardDecoration,
   String language = 'en',
   LocationAccuracy desiredAccuracy = LocationAccuracy.best,
+  ShowLocation showLocation = ShowLocation.address,
 }) async {
   final results = await Navigator.of(context).push(
     MaterialPageRoute<dynamic>(
@@ -487,6 +517,7 @@ Future<LocationResult> showLocationPicker(
           countries: countries,
           language: language,
           desiredAccuracy: desiredAccuracy,
+          showLocation: showLocation,
         );
       },
     ),
