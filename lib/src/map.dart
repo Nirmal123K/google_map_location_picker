@@ -261,7 +261,16 @@ class MapPickerState extends State<MapPicker> {
                             _address = data.postalCode;
                             break;
                           case ShowLocation.subLocalityDistrictState:
-                            _address =  data.subLocality != null ? '${data?.subLocality},' ' ${data.subAdminArea},'' ${data.adminArea}' : '${data.subAdminArea},'' ${data.adminArea}';
+                              if(data.subLocality != null && data.locality != null)
+                              {
+                                 _address =   '${data?.subLocality},' ' ${data.locality}';
+                              }else if(data.subLocality == null && data.locality != null){
+                                 _address =   '${data.locality},';
+                              }else if{data.subLocality != null && data.locality == null}{
+                                  _address =   '${data?.subLocality},' ' ${data.subAdminArea}';
+                              }else{
+                                _address = '${data.subAdminArea}';
+                              }
                             break;
                           default:
                             _address = data.addressLine;
