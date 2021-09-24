@@ -260,6 +260,9 @@ class MapPickerState extends State<MapPicker> {
                           case ShowLocation.pincode:
                             _address = data.postalCode;
                             break;
+                          case ShowLocation.cityDistrictState:
+                            _address = '${data.locality},'' ${data.subAdminArea},'' ${data.adminArea}';
+                            break;
                           default:
                             _address = data.addressLine;
                         }

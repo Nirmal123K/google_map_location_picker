@@ -459,6 +459,7 @@ enum ShowLocation {
   city,
   pincode,
   address,
+  cityDistrictState
 }
 
 /// Returns a [LatLng] object of the location that was picked.
