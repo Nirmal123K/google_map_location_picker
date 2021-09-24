@@ -266,11 +266,10 @@ class MapPickerState extends State<MapPicker> {
                                  _address =   '${data?.subLocality},' ' ${data.locality}';
                               }else if(data.subLocality == null && data.locality != null){
                                  _address =   '${data.locality},';
-                              }else if{data.subLocality != null && data.locality == null}{
+                              }else if(data.subLocality != null && data.locality == null){
                                   _address =   '${data?.subLocality},' ' ${data.subAdminArea}';
-                              }else{
-                                _address = '${data.subAdminArea}';
                               }
+                              _address = '${data.subAdminArea}';
                             break;
                           default:
                             _address = data.addressLine;
