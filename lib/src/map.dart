@@ -263,7 +263,7 @@ class MapPickerState extends State<MapPicker> {
                             break;
                           case ShowLocation.cityDistrictState:
                             //_address =  data.subLocality != null ? '${data?.subLocality},' ' ${data.subAdminArea},'' ${data.adminArea}' : '${data.subAdminArea},'' ${data.adminArea}';
-                            _address = S.of(context)?.search_place;
+                            _address =  widget.hintText;
                             break;
                           default:
                             _address = data.addressLine;
