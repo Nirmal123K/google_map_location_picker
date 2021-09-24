@@ -16,7 +16,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:geocoder/geocoder.dart';
-import 'package:google_map_location_picker/generated/l10n.dart';
 
 import 'model/location_result.dart';
 import 'utils/location_utils.dart';
@@ -261,9 +260,8 @@ class MapPickerState extends State<MapPicker> {
                           case ShowLocation.pincode:
                             _address = data.postalCode;
                             break;
-                          case ShowLocation.cityDistrictState:
-                            //_address =  data.subLocality != null ? '${data?.subLocality},' ' ${data.subAdminArea},'' ${data.adminArea}' : '${data.subAdminArea},'' ${data.adminArea}';
-                            _address =  widget.hintText;
+                          case ShowLocation.subLocalityDistrictState:
+                            _address =  data.subLocality != null ? '${data?.subLocality},' ' ${data.subAdminArea},'' ${data.adminArea}' : '${data.subAdminArea},'' ${data.adminArea}';
                             break;
                           default:
                             _address = data.addressLine;
