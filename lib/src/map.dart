@@ -261,14 +261,36 @@ class MapPickerState extends State<MapPicker> {
                             _address = data.postalCode;
                             break;
                           case ShowLocation.subLocalityDistrictState:
-                            _address = data.locality != null ? data.subLocality != null  ? '${data?.subLocality},' ' ${data.locality}' : data.featureName != null ?  '${data.featureName},' '${data.thoroughfare},' '${data?.subThoroughfare ?? ''},' ' ${data.locality}'  :  '${data.locality}' : '${data.subAdminArea}';
+                        if(data?.postalCode != null){
+                          _address = data.addressLine.replaceAll(data?.postalCode, '');
+                        }else{
+                          _address = data.addressLine;
+                        }
+                          // if(data.locality != null ){
+                          //   if(data.featureName != null  &&  data.thoroughfare != null){
+                          //     _address = '${data.featureName},' ' ${data.thoroughfare},'' ${data.locality}';
+                          //   }else if(data?.featureName == null  &&  data?.thoroughfare != null ){
+                          //     _address = '${data.thoroughfare},'' ${data.locality}';
+                          //   }else if(data?.featureName != null  &&  data?.thoroughfare == null){
+                          //     _address = '${data.featureName},'' ${data.locality}';
+                          //   }
+                          //   else{
+                          //     _address ='${data.locality}';
+                          //   }
+                          // }else if(data?.subAdminArea != null){
+                          //     _address ='${data.subAdminArea}';
+                          // }else if(data.adminArea != null){
+                          //   _address ='${data.adminArea}';
+                          // }else{
+                          //     _address ='${data.countryName}';
+                          // }
                             break;
                           default:
                             _address = data.addressLine;
                         }
                         _placeId = data.postalCode;
                         return Text(
-                          _address ??
+                          _address ?? 
                               S.of(context)?.unnamedPlace ??
                               'Unnamed place',
                           style: TextStyle(fontSize: 18),

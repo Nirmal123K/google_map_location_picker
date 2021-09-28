@@ -76,13 +76,13 @@ class NewLocationResult {
         ?.longName;
   }
 
-  String get postalCode {
-    return this
-        .addressComponents
-        .firstWhereOrNull(
-            (address) => address.types.any((type) => type == 'postal_code'))
-        ?.longName;
-  }
+  // String get postalCode {
+  //   return this
+  //       .addressComponents
+  //       .firstWhereOrNull(
+  //           (address) => address.types.any((type) => type == 'postal_code'))
+  //       ?.longName;
+  // }
 
   LocationResult toLocationResult() {
     return LocationResult(
